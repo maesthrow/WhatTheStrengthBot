@@ -3,7 +3,7 @@ from mongo_db.mongo_collection_videos import get_videos_collection, set_video_da
 
 async def remove_publish_dates():
     videos = await get_videos_collection()
-    for video in videos:
-        video_data = await get_video_data(video['_id'])
+    async for video in videos.find():
+        video_data = video  # уже содержит данные, нет нужды делать дополнительный запрос
         video_data['publish_date'] = None
         await set_video_data(video['_id'], video_data)

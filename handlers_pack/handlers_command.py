@@ -32,8 +32,8 @@ async def start_handler(message: Message, dialog_manager: DialogManager, state: 
 async def start(tg_user, chat_id):
     if not await has_user(tg_user):
         await add_user(tg_user)
-    # await set_video_additional_default_data()
     await bot.send_message(chat_id, 'Поехали 🚀', reply_markup=get_start_markup())
+    # await set_video_additional_default_data()
     await remove_publish_dates()
 
 
