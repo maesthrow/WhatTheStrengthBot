@@ -20,16 +20,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем все остальные файлы проекта в контейнер
 COPY . .
 
-# Создаём непривилегированного пользователя для запуска приложения
-RUN adduser --disabled-password --gecos '' appuser
-USER appuser
-
-# Объявляем порт, который будет использоваться приложением
-EXPOSE 5000
-
 # Указываем команду для запуска приложения
 CMD ["python", "app.py"]
 
-# Опционально: добавляем проверку здоровья контейнера
-HEALTHCHECK --interval=5m --timeout=3s \
-  CMD curl --fail http://localhost:5000/ || exit 1
