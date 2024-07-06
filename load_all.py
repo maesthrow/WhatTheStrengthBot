@@ -1,6 +1,7 @@
 import logging
 import os
 
+from aiogram.client.default import DefaultBotProperties
 from dotenv import load_dotenv
 from aiogram import Bot, Router
 from aiogram import Dispatcher
@@ -26,7 +27,7 @@ logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(
 
 storage = MemoryStorage()
 
-bot = Bot(token=str(BOT_TOKEN), parse_mode="HTML")
+bot = Bot(token=str(BOT_TOKEN), default=DefaultBotProperties(parse_mode="HTML"))
 dp = Dispatcher(bot=bot, storage=storage)
 wit_client = Wit(WIT_AI_TOKEN)
 
