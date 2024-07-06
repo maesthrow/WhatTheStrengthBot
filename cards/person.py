@@ -39,7 +39,7 @@ async def send_video_card(chat_id, video_id):
                 )
                 video_data["tg_preview_id"] = photo_message.photo[0].file_id
 
-            if publish_date == datetime.date.min:
+            if publish_date == datetime.datetime.min:
                 video_data["publish_date"] = yt.publish_date
 
             await set_video_data(video_id, video_data)

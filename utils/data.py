@@ -7,5 +7,5 @@ async def remove_publish_dates():
     videos = await get_videos_collection()
     for video in videos.find():
         video_data = video
-        video_data['publish_date'] = datetime.date.min
+        video_data['publish_date'] = datetime.datetime.min
         await set_video_data(video['_id'], video_data)
