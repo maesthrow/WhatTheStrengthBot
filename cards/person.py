@@ -30,6 +30,8 @@ async def send_video_card(chat_id, video_id):
                 reply_markup=markup),
         if not preview_file_id or publish_date == datetime.datetime.min:
             yt = get_youtube_instance(video_id)
+            print(f'yt.video_id {yt.video_id}')
+            print(f'yt.publish_date {yt.publish_date}')
             if not preview_file_id:
                 photo_message = await bot.send_photo(
                     chat_id,
