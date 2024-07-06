@@ -42,11 +42,10 @@ async def send_video_card(chat_id, video_id):
                 video_data["tg_preview_id"] = photo_message.photo[0].file_id
 
             video_data["publish_date"] = yt.publish_date
-            await bot.send_message(chat_id=chat_id, text=yt.publish_date)
+            await bot.send_message(chat_id=chat_id, text=f'yt.publish_date {yt.publish_date}\nyt.title {yt.title}')
             await set_video_data(video_id, video_data)
 
         await bot.send_audio(chat_id=chat_id, audio=audio_file_id)
-
 
 
 def get_youtube_instance(video_id):
