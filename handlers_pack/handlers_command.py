@@ -34,7 +34,7 @@ async def start(tg_user, chat_id):
         await add_user(tg_user)
     await bot.send_message(chat_id, 'Поехали 🚀', reply_markup=get_start_markup())
     # await set_video_additional_default_data()
-    await remove_publish_dates()
+    # await remove_publish_dates()
 
 
 @router.message(Command(commands=["select"]))
