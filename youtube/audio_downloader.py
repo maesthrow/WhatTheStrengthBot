@@ -10,12 +10,14 @@ from youtube_dl.utils import sanitize_filename
 from utils.filename import get_splitter
 from youtube.sections_time_getter import extract_sections
 from youtube.video_info_getter import get_video_description
+from youtube.yt_dlp_lib import get_video_info_by_url
+from yt_dlp import YoutubeDL
 
 TEMP_FOLDER = 'temp\\origin_audio'
 TEMP_FOLDER_STRENGTHS = 'temp\\strengths'
 
 
-def download_audio(youtube_url, new_filename: str, author: str = None):
+def download_audio_old(youtube_url, new_filename: str, author: str = None):
     try:
         yt = YouTube(youtube_url)
         audio_stream = yt.streams.filter(only_audio=True).first()
@@ -53,7 +55,7 @@ def download_audio(youtube_url, new_filename: str, author: str = None):
         return None
 
 
-def download_audio_section(youtube_url, section_name):
+def download_audio_section_old(youtube_url, section_name):
     times = _get_const_times(youtube_url)
     if not times:
         yt = YouTube(youtube_url)
@@ -67,7 +69,7 @@ def download_audio_section(youtube_url, section_name):
     return None
 
 
-def _download_audio_section(youtube_url, start_time, end_time, section_name):
+def _download_audio_section_old(youtube_url, start_time, end_time, section_name):
     yt = YouTube(youtube_url)
     audio = yt.streams.filter(only_audio=True).first()
     temp_file_path = os.path.join(TEMP_FOLDER_STRENGTHS, audio.default_filename)
@@ -95,6 +97,93 @@ def _download_audio_section(youtube_url, start_time, end_time, section_name):
     os.remove(temp_file_path)
 
     return final_audio_path
+
+
+def download_audio(youtube_url, new_filename: str, author: str = None):
+    try:
+        ydl_opts = {
+            'format': 'bestaudio',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+            'outtmpl': os.path.join(TEMP_FOLDER_STRENGTHS, f"{new_filename}.%(ext)s"),
+            'quiet': False
+        }
+
+        with YoutubeDL(ydl_opts) as ydl:
+            info_dict = ydl.extract_info(youtube_url, download=True)
+            audio_file_path = ydl.prepare_filename(info_dict)
+
+        # Добавление тегов
+        audio_file = MP3(audio_file_path, ID3=ID3)
+        audio_file.tags.add(TIT2(encoding=3, text=new_filename))
+        if author:
+            audio_file.tags.add(TPE1(encoding=3, text=author))
+        else:
+            audio_file.tags.add(TPE1(encoding=3, text=info_dict.get('uploader', 'Unknown artist')))
+        audio_file.save()
+
+        print(audio_file_path)
+        return audio_file_path
+
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+        return None
+
+
+def download_audio_section(youtube_url, section_name):
+    times = _get_const_times(youtube_url)
+    if not times:
+        video_info = get_video_info_by_url(youtube_url)
+        description = video_info.get('description')
+        duration = video_info.get('duration')
+        times = extract_sections(description, duration)
+    print(f'times {times}')
+    if times and section_name in times.keys():
+        start_time, end_time = times[section_name]
+        return _download_audio_section(youtube_url, start_time, end_time, section_name)
+
+    return None
+
+
+def _download_audio_section(youtube_url, start_time, end_time, section_name):
+    ydl_opts = {
+        'format': 'bestaudio',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        'outtmpl': os.path.join(TEMP_FOLDER_STRENGTHS, '%(id)s.%(ext)s')
+    }
+
+    try:
+        with YoutubeDL(ydl_opts) as ydl:
+            info_dict = ydl.extract_info(youtube_url, download=True)
+            temp_file_path = os.path.join(TEMP_FOLDER_STRENGTHS, f"{info_dict['id']}.mp3")
+
+        file_base = os.path.splitext(os.path.basename(temp_file_path))[0]
+        file_name = f"{file_base} - {sanitize_filename(section_name)}"
+        final_audio_path = os.path.join(TEMP_FOLDER_STRENGTHS, f'{file_name}.mp3')
+
+        with AudioFileClip(temp_file_path) as audio_clip:
+            trimmed_audio = audio_clip.subclip(start_time, end_time)
+            trimmed_audio.write_audiofile(final_audio_path, codec='libmp3lame')
+
+        audio = MP3(final_audio_path, ID3=ID3)
+        audio.tags.add(TIT2(encoding=3, text=file_name))
+        audio.tags.add(TPE1(encoding=3, text=info_dict.get('uploader', 'Unknown')))
+        audio.save()
+
+        return final_audio_path
+    except Exception as e:
+        print(f"Failed to process audio: {e}")
+        return None
+    finally:
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
 
 
 def _get_const_times(youtube_url) -> dict:
