@@ -1,3 +1,5 @@
+import datetime
+
 from aiogram.enums import ParseMode
 from pytube import YouTube
 
@@ -26,7 +28,7 @@ async def send_video_card(chat_id, video_id):
                 photo=preview_file_id,
                 caption=get_thesis_caption(thesis),
                 reply_markup=markup),
-        if not preview_file_id or not publish_date:
+        if not preview_file_id or publish_date == datetime.date.min:
             yt = get_youtube_instance(video_id)
             if not preview_file_id:
                 photo_message = await bot.send_photo(
@@ -37,7 +39,7 @@ async def send_video_card(chat_id, video_id):
                 )
                 video_data["tg_preview_id"] = photo_message.photo[0].file_id
 
-            if not publish_date:
+            if publish_date == datetime.date.min:
                 video_data["publish_date"] = yt.publish_date
 
             await set_video_data(video_id, video_data)
