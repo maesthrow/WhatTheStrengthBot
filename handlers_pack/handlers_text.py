@@ -5,6 +5,7 @@ from aiogram import Router, F
 from aiogram.types import Message, FSInputFile
 from pytube import YouTube
 
+from cards.person import retry_access_ty_object
 from data.users_repository import get_user_likes
 from giga_chat.giga import giga_get_thesis, giga_get_edit_text
 from load_all import dp, bot
@@ -27,7 +28,7 @@ async def text_youtube_link_handler(message: Message):
     youtube_urls = re.findall(r'(https?://[^\s]+)', message.text)
 
     for url in youtube_urls:
-        yt = YouTube(url)
+        yt = retry_access_ty_object(url)
         preview_url = yt.thumbnail_url
 
         video_data = await get_video_data(yt.video_id)

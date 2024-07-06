@@ -1,4 +1,5 @@
 import datetime
+import time
 
 from aiogram.enums import ParseMode
 from pytube import YouTube
@@ -51,5 +52,24 @@ async def send_video_card(chat_id, video_id):
 def get_youtube_instance(video_id):
     base_url = "https://www.youtube.com/watch?v="
     video_url = base_url + video_id
-    yt = YouTube(video_url)
+    yt = retry_access_ty_object(video_url)
     return yt
+
+
+def retry_access_ty_object(url, max_retries=5, interval_secs=5, on_progress_callback=None):
+    """
+    Retries creating a YouTube object with the given URL and accessing its title several times
+    with a given interval in seconds, until it succeeds or the maximum number of attempts is reached.
+    If the object still cannot be created or the title cannot be accessed after the maximum number
+    of attempts, the last exception is raised.
+    """
+    last_exception = None
+    for i in range(max_retries):
+        try:
+            yt = YouTube(url, on_progress_callback=on_progress_callback)
+            title = yt.title  # Access the title of the YouTube object.
+            return yt  # Return the YouTube object if successful.
+        except Exception as err:
+            last_exception = err  # Keep track of the last exception raised.
+            print(f"Failed to create YouTube object or access title. Retrying... ({i+1}/{max_retries})")
+            time.sleep(interval_secs)  # Wait for the specified interval before retrying.
