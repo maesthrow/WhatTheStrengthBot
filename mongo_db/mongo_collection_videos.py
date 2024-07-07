@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pytube import YouTube
 
 from mongo_db.mongo import db
@@ -29,7 +31,7 @@ async def add_video(video_info: dict, tg_audio_id: str, tg_preview_id: str, text
             "views": 1,
             "likes": 0,
             "dislikes": 0,
-            "publish_date": video_info.get('upload_date')
+            "publish_date": datetime.strptime(video_info.get('upload_date'), '%Y%m%d')
         }
 
     try:

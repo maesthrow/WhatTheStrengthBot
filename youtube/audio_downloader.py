@@ -164,8 +164,10 @@ def _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_na
             info_dict = ydl.extract_info(youtube_url, download=True)
             temp_file_path = os.path.join(TEMP_FOLDER_STRENGTHS, f"{info_dict['id']}.mp3")
 
-        file_base = os.path.splitext(os.path.basename(temp_file_path))[0]
-        file_name = f"{file_base} - {sanitize_filename(section_name)}"
+        # file_base = os.path.splitext(os.path.basename(temp_file_path))[0]
+        splitter = get_splitter(info_dict.get('title'))
+        person_name = info_dict.get('title').split(splitter)[0].strip()
+        file_name = f"{person_name} - {sanitize_filename(section_name)}"
         final_audio_path = os.path.join(TEMP_FOLDER_STRENGTHS, f'{file_name}.mp3')
 
         with AudioFileClip(temp_file_path) as audio_clip:

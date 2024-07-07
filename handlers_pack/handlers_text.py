@@ -36,12 +36,17 @@ async def text_youtube_link_handler(message: Message):
 
         video_data = await get_video_data(video_info.get('id'))
         if not video_data:
+            wait_message = await bot.send_message(message.chat.id, 'Минуту, сейчас узнаем в чем сила...')
+            await bot.send_chat_action(message.chat.id, "typing")
+
             if url == 'https://youtu.be/fz6lGsgEGZ8?si=kJM1FK4dEff9LXfW':
                 audio_file_path = download_audio_yt_dlp(url, 'Данила Багров - В чем сила', 'Брат-2')
             elif url == 'https://youtu.be/woABg3bbh0g?si=taddQVW4c5Nd3lgE':
                 audio_file_path = download_audio_yt_dlp(url, 'Сергей Бодров - В чем сила', 'Сергей Бодров')
             else:
                 audio_file_path = download_audio_section_yt_dlp(url, 'В чем сила?')
+
+            await bot.delete_message(wait_message.chat.id, wait_message.message_id)
 
             if not audio_file_path:
                 await bot.send_message(message.chat.id, 'Не удалось узнать в чем сила')
