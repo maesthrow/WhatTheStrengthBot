@@ -13,7 +13,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Копирование файлов cookie
-COPY youtube/youtube_cookies.txt /app/youtube/youtube_cookies.txt
+#COPY youtube/youtube_cookies.txt /app/youtube/youtube_cookies.txt
 
 # Копируем файл зависимостей в рабочую директорию
 COPY requirements.txt ./
@@ -25,8 +25,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Создаём непривилегированного пользователя для запуска приложения
-RUN adduser --disabled-password --gecos '' appuser
-USER appuser
+#RUN adduser --disabled-password --gecos '' appuser
+#USER appuser
 
 # Объявляем порт, который будет использоваться приложением
 EXPOSE 5000
