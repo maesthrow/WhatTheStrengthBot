@@ -38,7 +38,7 @@ async def send_video_card(chat_id, video_id):
                 video_data["tg_preview_id"] = photo_message.photo[0].file_id
 
             video_data["publish_date"] = datetime.strptime(video_info.get('upload_date'), '%Y%m%d')
-            await bot.send_message(chat_id=chat_id, text=f'yt.publish_date {video_info.get('upload_date')}\nyt.title {video_info.get('title')}')
+            await bot.send_message(chat_id=chat_id, text=f'upload_date {video_info.get('upload_date')}\ntitle {video_info.get('title')}')
             await set_video_data(video_id, video_data)
 
         await bot.send_audio(chat_id=chat_id, audio=audio_file_id)
