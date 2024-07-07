@@ -215,4 +215,23 @@ def _get_const_times(youtube_url) -> dict:
         return {'В чем сила?': ('1:17:06.00', '1:17:18.00')}
     if youtube_url == 'https://youtu.be/Uzu9clzaLvg?si=K49WOMC5GZhltOoJ':  # Лапенко
         return {'В чем сила?': ('1:14:24.00', '1:14:50.00')}
+    if youtube_url == 'https://youtu.be/kE04ATMQyso?si=e3C4bDo1pfhOjwxN':  # Anacondaz
+        return {'В чем сила?': ('1:16:03.00', '1:17:27.00')}
+    if youtube_url == 'https://youtu.be/sRwXMnLgcK4?si=pKZXEDL_Ez7ymRYt':  # Горбачева
+        return {'В чем сила?': ('1:39:05.00', '1:39:49.00')}
+    if youtube_url == 'https://youtu.be/95ReakCrKX0?si=9Ai4D_G2eKgg_L1y':  # IC3PEAK
+        return {'В чем сила?': ('1:30:12.00', '1:30:36.00')}
+    if youtube_url == 'https://youtu.be/PWt27h_scaY?si=SKBGXiH_2--Q5O-M':  # Лошак
+        return {'В чем сила?': ('1:45:56.00', '1:47:05.00')}
+    if youtube_url == 'https://youtu.be/XnHIsoonXHc?si=4NKLP-8IBE3yL6bH':  # Усович
+        return {'В чем сила?': ('1:14:05.00', '1:14:23.00')}
+    if youtube_url == 'https://youtu.be/skFNJ3tB67M?si=2WTrk5TIntouhtLM':  # Козырев
+        return {'В чем сила?': ('1:50:13.00', '1:50:36.00')}
+    if youtube_url == 'https://youtu.be/xH777TiUF90?si=-NReNmfX_aACqPHM':  # Юра Борисов
+        return {'В чем сила?': ('1:19:03.00', '1:19:36.00')}
+    if youtube_url == 'https://youtu.be/JB7E8wuEHjI?si=J2Ht5MbWMt3c80WY':  # Усачев
+        return {'В чем сила?': ('1:40:07.00', '1:40:32.00')}
+
+    # ? - Сигарев, Павлов-Андреев, Ланьков
+
     return {}
