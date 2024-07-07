@@ -8,4 +8,4 @@ def get_yt_by_id(video_id: str):
 
 
 def get_yt_by_url(video_url: str):
-    return YouTube(video_url)
+    return YouTube(url=video_url, use_oauth=True, allow_oauth_cache=True)
