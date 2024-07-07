@@ -102,6 +102,7 @@ def _download_audio_section_pytube(youtube_url, start_time, end_time, section_na
 def download_audio_yt_dlp(youtube_url, new_filename: str, author: str = None):
     try:
         ydl_opts = {
+            'cookiefile': '/app/youtube/youtube_cookies.txt',
             'format': 'bestaudio',
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
@@ -150,6 +151,7 @@ def download_audio_section_yt_dlp(youtube_url, section_name):
 
 def _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_name):
     ydl_opts = {
+        'cookiefile': '/app/youtube/youtube_cookies.txt',
         'format': 'bestaudio',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',

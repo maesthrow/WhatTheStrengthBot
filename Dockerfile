@@ -12,6 +12,9 @@ RUN apt-get update && \
 # Устанавливаем рабочую директорию в контейнере
 WORKDIR /app
 
+# Копирование файлов cookie
+COPY youtube/youtube_cookies.txt /app/youtube/youtube_cookies.txt
+
 # Копируем файл зависимостей в рабочую директорию
 COPY requirements.txt ./
 
