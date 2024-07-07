@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y \
     ffmpeg \
     build-essential \
-    curl && \  # Добавлено для поддержки healthcheck
+    curl && \  # Добавлено для поддержки healthcheck \
     # Очищаем кэш apt для уменьшения размера образа
     rm -rf /var/lib/apt/lists/*
 
