@@ -31,7 +31,7 @@ async def send_video_card(chat_id, video_id):
                 photo=preview_file_id,
                 caption=get_thesis_caption(thesis),
                 reply_markup=markup),
-        if not preview_file_id or True:
+        if not preview_file_id: # or True:
             # yt = get_yt_by_id(video_id)
             # video_info = get_video_info_by_id(video_id)
             if not preview_file_id:
@@ -44,7 +44,7 @@ async def send_video_card(chat_id, video_id):
                 )
                 video_data["tg_preview_id"] = photo_message.photo[0].file_id
 
-            video_data["publish_date"] = get_video_attribute(get_video_url(video_id), 'publishedAt')
+            # video_data["publish_date"] = get_video_attribute(get_video_url(video_id), 'publishedAt')
             # await bot.send_message(chat_id=chat_id, text=f'publish_date {video_data["publish_date"]}\nthumbnail_url {get_video_attribute(get_video_url(video_id), 'thumbnail_url')}')
             await set_video_data(video_id, video_data)
 
