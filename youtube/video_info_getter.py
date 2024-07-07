@@ -2,7 +2,7 @@ import os
 
 from googleapiclient.discovery import build
 
-from youtube.video_id_getter import extract_video_id
+from youtube.video_attributes_getter import extract_video_id
 
 API_KEY = os.getenv('YOU_TUBE_DATA_API_KEY')
 

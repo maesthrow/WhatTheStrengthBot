@@ -14,3 +14,9 @@ def extract_video_id(url):
         return parsed_url.path[1:]  # Пропустим слэш
     else:
         return None
+
+
+def get_video_url(video_id):
+    base_url = "https://www.youtube.com/watch?v="
+    video_url = base_url + video_id
+    return video_url

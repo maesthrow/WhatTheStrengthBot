@@ -4,6 +4,7 @@ FROM python:3.12-slim
 # Обновляем список пакетов и устанавливаем необходимые инструменты для сборки
 RUN apt-get update && \
     apt-get install -y \
+    ffmpeg \
     build-essential && \
     # Очищаем кэш apt для уменьшения размера образа
     rm -rf /var/lib/apt/lists/*
@@ -30,6 +31,6 @@ EXPOSE 5000
 # Указываем команду для запуска приложения
 CMD ["python", "app.py"]
 
-# Опционально: добавляем проверку здоровья контейнера
-HEALTHCHECK --interval=5m --timeout=3s \
-  CMD curl --fail http://localhost:5000/ || exit 1
+## Опционально: добавляем проверку здоровья контейнера
+#HEALTHCHECK --interval=5m --timeout=3s \
+#  CMD curl --fail http://localhost:5000/ || exit 1

@@ -21,11 +21,11 @@ try:
 except Exception as e:
     logging.error(e)
 
-# local:
-# db = client["whats_the_strength"]
-
 # amvera prod
 db = client["what_the_strength"]
+
+# local:
+# db = client["whats_the_strength"]
 
 
 async def close_mongo_client():

@@ -21,11 +21,12 @@ def format_time_stamp(time_str):
     return f'{h}:{m}:{s}'
 
 
-def extract_sections(input_string, yt):
+def extract_sections(input_string, video_duration):
+    print(f'video_duration {video_duration}')
     pattern = re.compile(r'(\d{1,2}:\d{2}:\d{2}(\.\d+)?|\d{1,2}:\d{2}|\d{1,2})\s+(.*?)\s*(?=\d{1,2}:\d{2}(:\d{2}(\.\d+)?)?\s|$)')
     matches = pattern.findall(input_string)
     sections = {}
-    last_end = f"{yt.length // 3600}:{(yt.length % 3600) // 60}:{(yt.length % 60):02}.00"  # Предполагаем, что `yt.length` задано в секундах
+    last_end = f"{video_duration // 3600}:{(video_duration % 3600) // 60}:{(video_duration % 60):02}.00"  # Предполагаем, что `yt.length` задано в секундах
     for i in range(len(matches) - 1, -1, -1):
         start_time = format_time_stamp(matches[i][0])
         end_time = last_end
