@@ -8,6 +8,7 @@ from aiogram_dialog.widgets.kbd import Select, Button, ManagedCheckbox, ManagedR
 from cards.person import send_video_card
 from data.videos_repository import get_persons_videos
 from states import MainMenuState, PersonState
+from utils.converter import to_date_time
 
 
 async def person_selected_handler(callback: CallbackQuery, widget: Select, dialog_manager: DialogManager, person_video_id):
@@ -36,7 +37,7 @@ async def sync_sort_type_change(c, b, d, item_id):
         sorted_persons = sorted(persons, key=lambda person: (-person['likes'], person['title'].lower()))
     elif value == 'publish_date':
         await radioSortType.set_checked('publish_date')
-        sorted_persons = sorted(persons, key=lambda person: (person['publish_date'], person['title'].lower()), reverse=True)
+        sorted_persons = sorted(persons, key=lambda person: (to_date_time(person['publish_date']), person['title'].lower()), reverse=True)
 
     dialog_manager.current_context().dialog_data = {'persons': sorted_persons}
     await dialog_manager.switch_to(state=PersonState.PersonSelect)

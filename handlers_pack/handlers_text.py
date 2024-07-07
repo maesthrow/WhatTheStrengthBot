@@ -16,7 +16,7 @@ from utils.user import get_like_icon_for_post, EMPTY_LIKE_ICON
 from youtube.audio_downloader import download_audio_yt_dlp, download_audio_section_yt_dlp, \
     download_audio_section_pytube, download_audio_pytube
 from youtube.pytube_lib import get_yt_by_url
-from youtube.video_info_getter import get_video_description
+from youtube.youtube_api_video_info_getter import get_video_attribute
 from youtube.yt_dlp_lib import get_video_info_by_url
 
 router = Router()

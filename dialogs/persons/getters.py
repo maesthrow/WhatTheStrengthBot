@@ -2,6 +2,7 @@ from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import ManagedCheckbox, ManagedRadio
 
 from data.videos_repository import get_persons_videos
+from utils.converter import to_date_time
 
 
 async def get_person_select_data(dialog_manager: DialogManager, **kwargs):
@@ -15,7 +16,7 @@ async def get_person_select_data(dialog_manager: DialogManager, **kwargs):
     if not dialog_manager.current_context().widget_data.get('sort_type'):
         dialog_manager.current_context().widget_data['sort_type'] = 'rating'
     if dialog_manager.current_context().widget_data.get('sort_type', 'rating') == 'publish_date':
-        sorted_persons = sorted(persons, key=lambda person: (person['publish_date'], person['title'].lower()),
+        sorted_persons = sorted(persons, key=lambda person: (to_date_time(person['publish_date']), person['title'].lower()),
                                 reverse=True)
     else:
         sorted_persons = sorted(persons, key=lambda person: (-person['likes'], person['title'].lower()))

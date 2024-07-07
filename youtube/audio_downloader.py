@@ -9,7 +9,7 @@ from youtube_dl.utils import sanitize_filename
 
 from utils.filename import get_splitter
 from youtube.sections_time_getter import extract_sections
-from youtube.video_info_getter import get_video_description
+from youtube.youtube_api_video_info_getter import get_video_attribute
 from youtube.yt_dlp_lib import get_video_info_by_url
 from yt_dlp import YoutubeDL
 
@@ -59,7 +59,7 @@ def download_audio_section_pytube(youtube_url, section_name):
     times = _get_const_times(youtube_url)
     if not times:
         yt = YouTube(youtube_url)
-        description = get_video_description(youtube_url)
+        description = get_video_attribute(youtube_url, 'description')
         times = extract_sections(description, yt.length)
     print(f'times {times}')
     if times and section_name in times.keys():

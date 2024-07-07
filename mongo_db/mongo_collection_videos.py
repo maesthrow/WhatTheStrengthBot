@@ -17,11 +17,11 @@ async def add_video(tg_audio_id: str, tg_preview_id: str, text, thesis, yt: YouT
     if yt:
         video_id = yt.video_id
         title = yt.title
-        publish_date = yt.publish_date
+        publish_date = str(yt.publish_date)
     elif video_info:
         video_id = video_info.get('id')
         title = video_info.get('title')
-        publish_date = datetime.strptime(video_info.get('upload_date'), '%Y%m%d')
+        publish_date = video_info.get('upload_date')
     else:
         raise ValueError("Отсутствуют данные для извлечения информации о видео.")
 
