@@ -60,11 +60,11 @@ def download_audio_section_pytube(youtube_url, section_name):
     if not times:
         yt = YouTube(youtube_url)
         description = get_video_description(youtube_url)
-        times = extract_sections(description, yt)
+        times = extract_sections(description, yt.length)
     print(f'times {times}')
     if times and section_name in times.keys():
         start_time, end_time = times[section_name]
-        return _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_name)
+        return _download_audio_section_pytube(youtube_url, start_time, end_time, section_name)
 
     return None
 
@@ -102,7 +102,6 @@ def _download_audio_section_pytube(youtube_url, start_time, end_time, section_na
 def download_audio_yt_dlp(youtube_url, new_filename: str, author: str = None):
     try:
         ydl_opts = {
-            'cookiefile': '/app/youtube/youtube_cookies.txt',
             'format': 'bestaudio',
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
@@ -151,7 +150,6 @@ def download_audio_section_yt_dlp(youtube_url, section_name):
 
 def _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_name):
     ydl_opts = {
-        'cookiefile': '/app/youtube/youtube_cookies.txt',
         'format': 'bestaudio',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',

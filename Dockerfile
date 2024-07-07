@@ -18,14 +18,6 @@ WORKDIR /app
 # Копируем файл зависимостей в рабочую директорию
 COPY requirements.txt ./
 
-# Создаем директорию и устанавливаем права доступа, разрешаем всем читать, писать и выполнять
-RUN mkdir -p /app/youtube && \
-    chmod 777 /app/youtube
-
-# Копируем файл кук и устанавливаем права доступа, разрешаем всем читать и писать
-COPY youtube/youtube_cookies.txt /app/youtube/youtube_cookies.txt
-RUN chmod 666 /app/youtube/youtube_cookies.txt
-
 # Устанавливаем зависимости Python без использования кэша pip
 RUN pip install --no-cache-dir -r requirements.txt
 

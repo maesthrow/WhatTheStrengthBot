@@ -3,7 +3,6 @@ from yt_dlp import YoutubeDL
 from youtube.video_attributes_getter import get_video_url
 
 ydl_opts = {
-    'cookiefile': '/app/youtube/youtube_cookies.txt',
     'quiet': True,
     'noplaylist': True,
     'format': 'bestaudio/best',
