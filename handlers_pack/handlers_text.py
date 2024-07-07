@@ -13,7 +13,7 @@ from salute_speech.audio_to_text_pro import get_text_from_audio
 from utils.buttons import get_person_video_card_keyboard
 from utils.text import get_redacted_text, get_caption, check_censored, get_thesis_caption
 from utils.user import get_like_icon_for_post, EMPTY_LIKE_ICON
-from youtube.audio_downloader import download_audio, download_audio_section
+from youtube.audio_downloader import download_audio_yt_dlp, download_audio_section_yt_dlp
 from youtube.video_info_getter import get_video_description
 from youtube.yt_dlp_lib import get_video_info_by_url
 
@@ -37,11 +37,11 @@ async def text_youtube_link_handler(message: Message):
         video_data = await get_video_data(video_info.get('id'))
         if not video_data:
             if url == 'https://youtu.be/fz6lGsgEGZ8?si=kJM1FK4dEff9LXfW':
-                audio_file_path = download_audio(url, 'Данила Багров - В чем сила', 'Брат-2')
+                audio_file_path = download_audio_yt_dlp(url, 'Данила Багров - В чем сила', 'Брат-2')
             elif url == 'https://youtu.be/woABg3bbh0g?si=taddQVW4c5Nd3lgE':
-                audio_file_path = download_audio(url, 'Сергей Бодров - В чем сила', 'Сергей Бодров')
+                audio_file_path = download_audio_yt_dlp(url, 'Сергей Бодров - В чем сила', 'Сергей Бодров')
             else:
-                audio_file_path = download_audio_section(url, 'В чем сила?')
+                audio_file_path = download_audio_section_yt_dlp(url, 'В чем сила?')
 
             if not audio_file_path:
                 await bot.send_message(message.chat.id, 'Не удалось узнать в чем сила')

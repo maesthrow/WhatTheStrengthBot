@@ -17,7 +17,7 @@ TEMP_FOLDER = 'temp\\origin_audio'
 TEMP_FOLDER_STRENGTHS = 'temp\\strengths'
 
 
-def download_audio_old(youtube_url, new_filename: str, author: str = None):
+def download_audio_pytube(youtube_url, new_filename: str, author: str = None):
     try:
         yt = YouTube(youtube_url)
         audio_stream = yt.streams.filter(only_audio=True).first()
@@ -55,7 +55,7 @@ def download_audio_old(youtube_url, new_filename: str, author: str = None):
         return None
 
 
-def download_audio_section_old(youtube_url, section_name):
+def download_audio_section_pytube(youtube_url, section_name):
     times = _get_const_times(youtube_url)
     if not times:
         yt = YouTube(youtube_url)
@@ -64,12 +64,12 @@ def download_audio_section_old(youtube_url, section_name):
     print(f'times {times}')
     if times and section_name in times.keys():
         start_time, end_time = times[section_name]
-        return _download_audio_section(youtube_url, start_time, end_time, section_name)
+        return _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_name)
 
     return None
 
 
-def _download_audio_section_old(youtube_url, start_time, end_time, section_name):
+def _download_audio_section_pytube(youtube_url, start_time, end_time, section_name):
     yt = YouTube(youtube_url)
     audio = yt.streams.filter(only_audio=True).first()
     temp_file_path = os.path.join(TEMP_FOLDER_STRENGTHS, audio.default_filename)
@@ -99,7 +99,7 @@ def _download_audio_section_old(youtube_url, start_time, end_time, section_name)
     return final_audio_path
 
 
-def download_audio(youtube_url, new_filename: str, author: str = None):
+def download_audio_yt_dlp(youtube_url, new_filename: str, author: str = None):
     try:
         ydl_opts = {
             'format': 'bestaudio',
@@ -133,7 +133,7 @@ def download_audio(youtube_url, new_filename: str, author: str = None):
         return None
 
 
-def download_audio_section(youtube_url, section_name):
+def download_audio_section_yt_dlp(youtube_url, section_name):
     times = _get_const_times(youtube_url)
     if not times:
         video_info = get_video_info_by_url(youtube_url)
@@ -143,12 +143,12 @@ def download_audio_section(youtube_url, section_name):
     print(f'times {times}')
     if times and section_name in times.keys():
         start_time, end_time = times[section_name]
-        return _download_audio_section(youtube_url, start_time, end_time, section_name)
+        return _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_name)
 
     return None
 
 
-def _download_audio_section(youtube_url, start_time, end_time, section_name):
+def _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_name):
     ydl_opts = {
         'format': 'bestaudio',
         'postprocessors': [{
