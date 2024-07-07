@@ -17,7 +17,10 @@ async def add_video(tg_audio_id: str, tg_preview_id: str, text, thesis, yt: YouT
     if yt:
         video_id = yt.video_id
         title = yt.title
-        publish_date = str(yt.publish_date)
+        if isinstance(yt.publish_date, datetime):
+            publish_date = yt.publish_date.strftime("%Y-%m-%dT%H:%M:%SZ")
+        else:
+            publish_date = str(yt.publish_date)
     elif video_info:
         video_id = video_info.get('id')
         title = video_info.get('title')

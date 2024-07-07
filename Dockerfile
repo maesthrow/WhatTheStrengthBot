@@ -25,8 +25,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Создаём непривилегированного пользователя для запуска приложения
-#RUN adduser --disabled-password --gecos '' appuser
-#USER appuser
+RUN adduser --disabled-password --gecos '' appuser
+USER appuser
 
 # Объявляем порт, который будет использоваться приложением
 EXPOSE 5000
@@ -35,5 +35,5 @@ EXPOSE 5000
 CMD ["python", "app.py"]
 
 # Опционально: добавляем проверку здоровья контейнера
-#HEALTHCHECK --interval=5m --timeout=3s \
-#  CMD curl --fail http://localhost:5000/ || exit 1
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD curl --fail http://localhost:5000/ || exit 1
