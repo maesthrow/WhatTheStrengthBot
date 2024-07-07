@@ -45,7 +45,7 @@ async def send_video_card(chat_id, video_id):
                 video_data["tg_preview_id"] = photo_message.photo[0].file_id
 
             video_data["publish_date"] = get_video_attribute(get_video_url(video_id), 'publishedAt')
-            await bot.send_message(chat_id=chat_id, text=f'publish_date {video_data["publish_date"]}\nthumbnail_url {get_video_attribute(get_video_url(video_id), 'thumbnail_url')}')
+            # await bot.send_message(chat_id=chat_id, text=f'publish_date {video_data["publish_date"]}\nthumbnail_url {get_video_attribute(get_video_url(video_id), 'thumbnail_url')}')
             await set_video_data(video_id, video_data)
 
         await bot.send_audio(chat_id=chat_id, audio=audio_file_id)
