@@ -18,9 +18,9 @@ COPY requirements.txt ./
 # Устанавливаем зависимости Python без использования кэша pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Точная замена строки с помощью sed и проверка изменений
+# Замена значения клиента в файле
 RUN sed -i "s/def __init__(self, client='ANDROID_MUSIC',/def __init__(self, client='WEB',/" /usr/local/lib/python3.12/site-packages/pytube/innertube.py && \
-    grep "def __init__(self, client='WEB'," /usr/local/lib/python3.12/site-packages/pytube/innertube.py \
+    grep "def __init__(self, client='WEB'," /usr/local/lib/python3.12/site-packages/pytube/innertube.py
 
 # Копируем все остальные файлы проекта в контейнер
 COPY . .
