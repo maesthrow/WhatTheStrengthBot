@@ -56,7 +56,7 @@ def get_youtube_instance(video_id):
     return yt
 
 
-def retry_access_ty_object(url, max_retries=5, interval_secs=5, on_progress_callback=None):
+def retry_access_ty_object(url, max_retries=10, interval_secs=1, on_progress_callback=None):
     """
     Retries creating a YouTube object with the given URL and accessing its title several times
     with a given interval in seconds, until it succeeds or the maximum number of attempts is reached.
