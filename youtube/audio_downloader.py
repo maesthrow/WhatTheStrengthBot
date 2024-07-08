@@ -231,6 +231,12 @@ def _get_const_times(youtube_url) -> dict:
         return {'В чем сила?': ('1:19:03.00', '1:19:36.00')}
     if youtube_url == 'https://youtu.be/JB7E8wuEHjI?si=J2Ht5MbWMt3c80WY':  # Усачев
         return {'В чем сила?': ('1:40:07.00', '1:40:32.00')}
+    if youtube_url == 'https://youtu.be/Ed47sWpgvf0?si=mn6cDS3L2qRYw93m':  # Бодров
+        return {'В чем сила?': ('0:01:46.00', '0:2:40.00')}
+
+    if youtube_url == 'https://youtu.be/en6ZUDjvUEs?si=pxMlkEuYnKbEUz7D':  # Сергей Бодров
+        return {'В чем сила?': ('0:01:46.00', '0:3:23.30')}
+
 
     # ? - Сигарев, Павлов-Андреев, Ланьков
 

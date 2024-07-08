@@ -57,6 +57,6 @@ async def inline_query_search_handler(query: Union[types.InlineQuery]):
 
     await bot.answer_inline_query(
         query.id,
-        results=search_results,
+        results=search_results[:50],
         cache_time=300,
     )

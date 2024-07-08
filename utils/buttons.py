@@ -65,6 +65,11 @@ def get_inline_search_markup():
         InlineKeyboardButton(
             text=f'Нажмите, чтобы активировать поиск',
             switch_inline_query_current_chat=''
+        ),
+        InlineKeyboardButton(
+            text=f'☰ Меню',
+            callback_data=MainMenuCallback().pack(),
         )
     )
+    builder.adjust(1, 1)
     return builder.as_markup()

@@ -7,7 +7,7 @@ from aiogram_dialog import DialogManager
 from cards.person import send_video_card
 from load_all import dp, bot
 from mongo_db.mongo_collection_users import has_user, add_user
-from states import PersonState
+from states import PersonState, MainMenuState
 from utils.buttons import get_inline_search_markup, get_start_markup
 from utils.data import remove_publish_dates
 from utils.playlist import send_playlist
@@ -52,8 +52,8 @@ async def search_handler(message: Message, dialog_manager: DialogManager, state:
 
 
 @router.message(Command(commands=["playlist"]))
-async def playlist_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
-    await send_playlist(message)
+async def playlists_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
+    await dialog_manager.start(MainMenuState.Playlists)
 
 
 @router.message(Command(commands=["help"]))

@@ -16,10 +16,6 @@ async def person_selected_handler(callback: CallbackQuery, widget: Select, dialo
     await send_video_card(chat_id, person_video_id)
 
 
-async def main_menu_handler(callback: CallbackQuery, button: Button, dialog_manager: DialogManager):
-    await dialog_manager.start(MainMenuState.Menu)
-
-
 async def sync_sort_type_change(c, b, d, item_id):
     dialog_manager: DialogManager = d
     value = item_id

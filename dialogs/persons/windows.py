@@ -4,9 +4,10 @@ from aiogram_dialog import Window, Dialog
 from aiogram_dialog.widgets.kbd import ScrollingGroup, Select, Button
 from aiogram_dialog.widgets.text import Format, Const
 
+from dialogs.general_handlers import main_menu_handler
 from dialogs.persons import keyboards
 from dialogs.persons.getters import get_person_select_data
-from dialogs.persons.handlers import person_selected_handler, main_menu_handler
+from dialogs.persons.handlers import person_selected_handler
 from dialogs.widgets.wts_scrolling_group import WtsScrollingGroup
 from states import PersonState
 
