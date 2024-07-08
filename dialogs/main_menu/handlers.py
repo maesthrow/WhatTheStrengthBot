@@ -16,3 +16,7 @@ async def select_playlist_handler(callback: CallbackQuery, button: Button, dialo
 
 async def send_all_rating_playlist_handler(callback: CallbackQuery, button: Button, dialog_manager: DialogManager):
     await send_playlist(callback.message)
+
+
+async def contact_developer_handler(callback: CallbackQuery, button: Button, dialog_manager: DialogManager):
+    pass
