@@ -23,6 +23,11 @@ router = Router()
 dp.include_router(router)
 
 
+@router.message(F.content_type == 'photo')
+async def photo_handler(message: Message):
+    print(f'photo_id {message.photo[0].file_id}')
+
+
 @router.message(F.text & (F.text.contains("youtube.com") | F.text.contains("youtu.be")))
 async def text_youtube_link_handler(message: Message):
     await bot.send_chat_action(message.chat.id, "typing")
@@ -30,12 +35,12 @@ async def text_youtube_link_handler(message: Message):
     youtube_urls = re.findall(r'(https?://[^\s]+)', message.text)
 
     for url in youtube_urls:
-        # video_info = get_video_info_by_url(url)
-        yt = get_yt_by_url(url)
-        # video_id = video_info.get('id')
-        # preview_url = video_info.get('thumbnail')
-        video_id = yt.video_id
-        preview_url = yt.thumbnail_url
+        video_info = get_video_info_by_url(url)
+        # yt = get_yt_by_url(url)
+        video_id = video_info.get('id')
+        preview_url = video_info.get('thumbnail')
+        # video_id = yt.video_id
+        # preview_url = yt.thumbnail_url
 
         video_data = await get_video_data(video_id)
         if not video_data:
@@ -49,8 +54,8 @@ async def text_youtube_link_handler(message: Message):
                 audio_file_path = download_audio_pytube(url, 'Сергей Бодров - В чем сила', 'Сергей Бодров')
                 # audio_file_path = download_audio_yt_dlp(url, 'Сергей Бодров - В чем сила', 'Сергей Бодров')
             else:
-                # audio_file_path = download_audio_section_yt_dlp(url, 'В чем сила?')
-                audio_file_path = download_audio_section_pytube(url, 'В чем сила?')
+                audio_file_path = download_audio_section_yt_dlp(url, 'В чем сила?')
+                # audio_file_path = download_audio_section_pytube(url, 'В чем сила?')
 
             await bot.delete_message(wait_message.chat.id, wait_message.message_id)
 
@@ -73,8 +78,8 @@ async def text_youtube_link_handler(message: Message):
             text = await get_redacted_text(audio_file_id)
             thesis = giga_get_thesis(check_censored(text))
 
-            # await add_video(audio_file_id, photo_file_id, text, thesis, video_info=video_info)
-            await add_video(audio_file_id, photo_file_id, text, thesis, yt=yt)
+            await add_video(audio_file_id, photo_file_id, text, thesis, video_info=video_info)
+            # await add_video(audio_file_id, photo_file_id, text, thesis, yt=yt)
 
             markup = get_person_video_card_keyboard(video_id, EMPTY_LIKE_ICON, 0)
             await bot.edit_message_caption(

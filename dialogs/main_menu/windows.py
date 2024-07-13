@@ -5,8 +5,9 @@ from aiogram_dialog.widgets.text import Const, Format
 from dialogs.general_handlers import main_menu_handler
 from dialogs.main_menu.getters import get_main_menu_data
 from dialogs.main_menu.handlers import select_persons_handler, select_playlist_handler, \
-    send_all_rating_playlist_handler, contact_developer_handler
+    send_playlist_handler, contact_developer_handler
 from dialogs.widgets.inline_query_button import InlineQueryButton
+from enums import PlaylistType
 from states import MainMenuState
 
 main_menu_window = Window(
@@ -21,11 +22,11 @@ main_menu_window = Window(
 
 playlists_window = Window(
     Const('🎧 Плейлисты ответов'),
-    Button(Const('Топ-10'), id="top10_playlist", on_click=None),
-    Button(Const('Топ-20'), id="top10_playlist", on_click=None),
-    Button(Const('Новые'), id="new_playlist", on_click=None),
-    Button(Const('Все ответы – хронология'), id="all_chronology_playlist", on_click=None),
-    Button(Const('Все ответы – рейтинг'), id="all_rating_playlist", on_click=send_all_rating_playlist_handler),
+    Button(Const(PlaylistType.Top10.value), id="top10_playlist", on_click=send_playlist_handler),
+    Button(Const(PlaylistType.Top20.value), id="top20_playlist", on_click=send_playlist_handler),
+    Button(Const(PlaylistType.New.value), id="new_playlist", on_click=send_playlist_handler),
+    Button(Const(PlaylistType.Chronology.value), id="all_chronology_playlist", on_click=send_playlist_handler),
+    Button(Const(PlaylistType.Rating.value), id="all_rating_playlist", on_click=send_playlist_handler),
     Button(text=Const("☰ Меню"), id="main_menu", on_click=main_menu_handler),
     state=MainMenuState.Playlists,
 )

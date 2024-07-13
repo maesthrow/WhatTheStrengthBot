@@ -16,7 +16,11 @@ async def get_full_playlist() -> dict:
     for doc in cursor:
         audio_file_id = doc.get('tg_audio_id')
         if audio_file_id:
-            audio_files[audio_file_id] = doc.get('title').split('-')[0].strip()
+            audio_files[audio_file_id] = {
+                'title': doc.get('title').split('-')[0].strip(),
+                'likes': doc.get('likes'),
+                'publish_date': doc.get('publish_date'),
+            }
     return audio_files
 
 

@@ -9,7 +9,7 @@ from load_all import dp, bot
 from mongo_db.mongo_collection_users import has_user, add_user
 from states import PersonState, MainMenuState
 from utils.buttons import get_inline_search_markup, get_start_markup
-from utils.data import remove_publish_dates
+from utils.data import remove_publish_dates, reset_publish_dates_to_str
 from utils.playlist import send_playlist
 
 router = Router()
@@ -35,6 +35,7 @@ async def start(tg_user, chat_id):
     await bot.send_message(chat_id, 'Поехали 🚀', reply_markup=get_start_markup())
     # await set_video_additional_default_data()
     # await remove_publish_dates()
+    # await reset_publish_dates_to_str()
 
 
 @router.message(Command(commands=["select"]))

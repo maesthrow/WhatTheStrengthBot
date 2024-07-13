@@ -90,7 +90,6 @@ def _download_audio_section_pytube(youtube_url, start_time, end_time, section_na
     # Добавление метаданных к файлу
     audio = MP3(final_audio_path, ID3=ID3)
     audio.tags.add(TIT2(encoding=3, text=file_name))
-    audio.tags.add(TPE1(encoding=3, text=yt.author))
     audio.save()
 
     # Опционально удалить оригинальный аудиофайл
@@ -168,6 +167,7 @@ def _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_na
         splitter = get_splitter(info_dict.get('title'))
         person_name = info_dict.get('title').split(splitter)[0].strip()
         file_name = f"{person_name} - {sanitize_filename(section_name)}"
+        file_name = f"Алик Афганец - В чем сила"
         final_audio_path = os.path.join(TEMP_FOLDER_STRENGTHS, f'{file_name}.mp3')
 
         with AudioFileClip(temp_file_path) as audio_clip:
@@ -176,7 +176,8 @@ def _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_na
 
         audio = MP3(final_audio_path, ID3=ID3)
         audio.tags.add(TIT2(encoding=3, text=file_name))
-        audio.tags.add(TPE1(encoding=3, text=info_dict.get('uploader', 'Unknown')))
+        # audio.tags.add(TPE1(encoding=3, text=info_dict.get('uploader', 'Unknown')))
+        audio.tags.add(TPE1(encoding=3, text="Мир! Дружба! Жвачка!"))
         audio.save()
 
         return final_audio_path
@@ -233,6 +234,9 @@ def _get_const_times(youtube_url) -> dict:
         return {'В чем сила?': ('1:40:07.00', '1:40:32.00')}
     if youtube_url == 'https://youtu.be/Ed47sWpgvf0?si=mn6cDS3L2qRYw93m':  # Бодров
         return {'В чем сила?': ('0:01:46.00', '0:2:40.00')}
+
+    if youtube_url == 'https://youtu.be/KUVt2zXRb6Y?si=KZWC3elkQadloqxV':  # Алик Авганец
+        return {'В чем сила?': ('0:00:25.00', '0:01:53.00')}
 
     if youtube_url == 'https://youtu.be/en6ZUDjvUEs?si=pxMlkEuYnKbEUz7D':  # Сергей Бодров
         return {'В чем сила?': ('0:01:46.00', '0:3:23.30')}
