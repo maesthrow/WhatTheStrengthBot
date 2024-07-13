@@ -1,4 +1,5 @@
 import os
+import re
 
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from mutagen.id3 import ID3, TIT2, TPE1
@@ -81,7 +82,7 @@ def _download_audio_section_pytube(youtube_url, start_time, end_time, section_na
 
     final_audio_path = (os.path.join(TEMP_FOLDER_STRENGTHS, f'{file_name}.mp3'))
     with AudioFileClip(temp_file_path) as audio_clip:
-        trimmed_audio = audio_clip.subclip(start_time, end_time)
+        trimmed_audio = trim_audio(audio_clip, start_time, end_time)
         try:
             trimmed_audio.write_audiofile(final_audio_path, codec='libmp3lame')  # Ensure using correct codec
         except Exception as e:
@@ -139,7 +140,6 @@ def download_audio_section_yt_dlp(youtube_url, section_name):
         description = video_info.get('description')
         duration = video_info.get('duration')
         times = extract_sections(description, duration)
-    print(f'times {times}')
     if times and section_name in times.keys():
         start_time, end_time = times[section_name]
         return _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_name)
@@ -167,17 +167,16 @@ def _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_na
         splitter = get_splitter(info_dict.get('title'))
         person_name = info_dict.get('title').split(splitter)[0].strip()
         file_name = f"{person_name} - {sanitize_filename(section_name)}"
-        file_name = f"Алик Афганец - В чем сила"
+        # file_name = f"Солодников - В чем сила"
         final_audio_path = os.path.join(TEMP_FOLDER_STRENGTHS, f'{file_name}.mp3')
 
         with AudioFileClip(temp_file_path) as audio_clip:
-            trimmed_audio = audio_clip.subclip(start_time, end_time)
+            trimmed_audio = trim_audio(audio_clip, start_time, end_time)
             trimmed_audio.write_audiofile(final_audio_path, codec='libmp3lame')
 
         audio = MP3(final_audio_path, ID3=ID3)
         audio.tags.add(TIT2(encoding=3, text=file_name))
-        # audio.tags.add(TPE1(encoding=3, text=info_dict.get('uploader', 'Unknown')))
-        audio.tags.add(TPE1(encoding=3, text="Мир! Дружба! Жвачка!"))
+        audio.tags.add(TPE1(encoding=3, text=info_dict.get('uploader', 'Unknown')))
         audio.save()
 
         return final_audio_path
@@ -234,6 +233,8 @@ def _get_const_times(youtube_url) -> dict:
         return {'В чем сила?': ('1:40:07.00', '1:40:32.00')}
     if youtube_url == 'https://youtu.be/Ed47sWpgvf0?si=mn6cDS3L2qRYw93m':  # Бодров
         return {'В чем сила?': ('0:01:46.00', '0:2:40.00')}
+    if youtube_url == 'https://youtu.be/mh-7jvePXF4?si=w3B7GHSd-QVBiO8d':  # Солодников
+        return {'В чем сила?': ('2:41:44.00', '2:41:49.00')}
 
     if youtube_url == 'https://youtu.be/KUVt2zXRb6Y?si=KZWC3elkQadloqxV':  # Алик Авганец
         return {'В чем сила?': ('0:00:25.00', '0:01:53.00')}
@@ -245,3 +246,39 @@ def _get_const_times(youtube_url) -> dict:
     # ? - Сигарев, Павлов-Андреев, Ланьков
 
     return {}
+
+
+def time_str_to_seconds(t_str):
+    """ Конвертирует строку времени 'HH:MM:SS' или 'HH:MM:SS.00' в секунды. """
+    parts = re.split('[:.]', t_str)
+    h, m, s = map(float, parts[:3])
+    return h * 3600 + m * 60 + s
+
+
+def seconds_to_time_str(seconds):
+    """ Конвертирует секунды обратно в строку времени 'HH:MM:SS.00'. """
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    seconds = int(seconds % 60)
+    return f"{hours:02}:{minutes:02}:{seconds:02}.00"
+
+
+def trim_audio(audio_clip, start_time_str, end_time_str):
+    clip_duration = audio_clip.duration
+
+    # Преобразуем строковые значения времени в секунды
+    start_time = time_str_to_seconds(start_time_str)
+    end_time = time_str_to_seconds(end_time_str)
+
+    # Проверяем и корректируем end_time, если он выходит за пределы длительности аудиоклипа
+    if end_time > clip_duration:
+        end_time = clip_duration
+
+    # Обрезаем аудио
+    trimmed_audio = audio_clip.subclip(start_time, end_time)
+
+    # Возвращаем конечное время в строковом формате для отображения или использования
+    end_time_str = seconds_to_time_str(end_time)
+    print(f"Trimmed audio ends at {end_time_str}")  # Отображаем обновленное конечное время
+
+    return trimmed_audio
