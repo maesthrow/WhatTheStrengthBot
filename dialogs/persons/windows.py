@@ -7,7 +7,7 @@ from aiogram_dialog.widgets.text import Format, Const
 from dialogs.general_handlers import main_menu_handler
 from dialogs.persons import keyboards
 from dialogs.persons.getters import get_person_select_data
-from dialogs.persons.handlers import person_selected_handler
+from dialogs.persons.handlers import person_selected_handler, persons_on_page_changed_handler
 from dialogs.widgets.wts_scrolling_group import WtsScrollingGroup
 from states import PersonState
 
@@ -24,7 +24,8 @@ person_select_window = Window(
         id='persons_scroll',
         height=8,
         width=1,
-        hide_on_single_page=True
+        hide_on_single_page=True,
+        on_page_changed=persons_on_page_changed_handler
     ),
     keyboards.sort_type_buttons(),
     Button(text=Const("☰ Меню"), id="main_menu", on_click=main_menu_handler),

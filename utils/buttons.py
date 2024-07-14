@@ -63,7 +63,7 @@ def get_inline_search_markup():
     builder = InlineKeyboardBuilder()
     builder.add(
         InlineKeyboardButton(
-            text=f'Нажмите, чтобы активировать поиск',
+            text=f'🔍️ Поиск персон 👤',
             switch_inline_query_current_chat=''
         ),
         InlineKeyboardButton(

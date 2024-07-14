@@ -13,9 +13,9 @@ from states import MainMenuState
 main_menu_window = Window(
     Format('{message_text}'),
     Button(Const('👥 Выбор персон'), id="select_persons", on_click=select_persons_handler),
-    InlineQueryButton(Const('️🔍️ Поиск персон'), id="search_persons", switch_inline_query_current_chat=Const("")),
+    InlineQueryButton(Const('️🔍️ Поиск персон 👤'), id="search_persons", switch_inline_query_current_chat=Const("")),
     Button(Const('🎧 Плейлисты ответов'), id="send_playlist", on_click=select_playlist_handler),
-    Button(Const('‍👨‍💻 Написать разработчику'), id="contact_developer", on_click=contact_developer_handler),
+    Button(Const('💬 Обратная связь'), id="contact_developer", on_click=contact_developer_handler),
     state=MainMenuState.Menu,
     getter=get_main_menu_data
 )

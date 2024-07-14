@@ -8,8 +8,10 @@ from cards.person import send_video_card
 from load_all import dp, bot
 from mongo_db.mongo_collection_users import has_user, add_user
 from states import PersonState, MainMenuState
+from storage.data_manager import add_data
 from utils.buttons import get_inline_search_markup, get_start_markup
 from utils.data import remove_publish_dates, reset_publish_dates_to_str
+from utils.entities import load_entities
 from utils.playlist import send_playlist
 
 router = Router()
@@ -36,10 +38,12 @@ async def start(tg_user, chat_id):
     # await set_video_additional_default_data()
     # await remove_publish_dates()
     # await reset_publish_dates_to_str()
+    await load_entities()
 
 
 @router.message(Command(commands=["select"]))
 async def select_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
+    await add_data(message.from_user.id, { 'persons_scroll_page': 0}) # устанавливаем на 1-ю страницу
     await dialog_manager.start(PersonState.PersonSelect)
 
 
