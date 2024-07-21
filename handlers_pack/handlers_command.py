@@ -11,7 +11,7 @@ from states import PersonState, MainMenuState
 from storage.data_manager import add_data
 from utils.buttons import get_inline_search_markup, get_start_markup
 from utils.data import remove_publish_dates, reset_publish_dates_to_str
-from utils.entities import load_entities
+from utils.entities import load_entities, get_entities_statistic
 from utils.playlist import send_playlist
 
 router = Router()
@@ -20,7 +20,7 @@ dp.include_router(router)
 
 @router.message(CommandStart())
 async def start_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
-    #print(message.text)
+    # print(message.text)
     tg_user = message.from_user
     chat_id = message.chat.id
     args = message.text.split()[1:] if len(message.text.split()) > 1 else []
@@ -34,17 +34,22 @@ async def start_handler(message: Message, dialog_manager: DialogManager, state: 
 async def start(tg_user, chat_id):
     if not await has_user(tg_user):
         await add_user(tg_user)
-    await bot.send_message(chat_id, 'Поехали 🚀', reply_markup=get_start_markup())
+    await bot.send_message(chat_id, '<b>Поехали</b> 🚀', reply_markup=get_start_markup())
     # await set_video_additional_default_data()
     # await remove_publish_dates()
     # await reset_publish_dates_to_str()
-    await load_entities()
 
 
 @router.message(Command(commands=["select"]))
 async def select_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
-    await add_data(message.from_user.id, { 'persons_scroll_page': 0}) # устанавливаем на 1-ю страницу
+    await add_data(message.from_user.id, {'persons_scroll_page': 0})  # устанавливаем на 1-ю страницу
     await dialog_manager.start(PersonState.PersonSelect)
+
+
+@router.message(Command(commands=["statistic"]))
+async def select_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
+    statistic = await get_entities_statistic()
+    await bot.send_message(message.chat.id, f'📊 <b>Статистика упоминаний</b>\n\n{'\n'.join(statistic)}')
 
 
 @router.message(Command(commands=["search"]))
@@ -61,6 +66,11 @@ async def playlists_handler(message: Message, dialog_manager: DialogManager, sta
     await dialog_manager.start(MainMenuState.Playlists)
 
 
+@router.message(Command(commands=["contact"]))
+async def playlists_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
+    await bot.send_message(message.chat.id, '<b>Обратная связь</b> 💬')
+
+
 @router.message(Command(commands=["help"]))
 async def help_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
     tg_user = message.from_user
@@ -70,6 +80,3 @@ async def help_handler(message: Message, dialog_manager: DialogManager, state: F
 @router.message(F.via_bot != None)
 async def via_bot_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
     pass
-
-
-

@@ -21,7 +21,7 @@ main_menu_window = Window(
 )
 
 playlists_window = Window(
-    Const('🎧 Плейлисты ответов'),
+    Const('🎧 <b>Плейлисты ответов</b>'),
     Button(Const(PlaylistType.Top10.value), id="top10_playlist", on_click=send_playlist_handler),
     Button(Const(PlaylistType.Top20.value), id="top20_playlist", on_click=send_playlist_handler),
     Button(Const(PlaylistType.New.value), id="new_playlist", on_click=send_playlist_handler),
