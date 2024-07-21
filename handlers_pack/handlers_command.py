@@ -46,12 +46,6 @@ async def select_handler(message: Message, dialog_manager: DialogManager, state:
     await dialog_manager.start(PersonState.PersonSelect)
 
 
-@router.message(Command(commands=["statistic"]))
-async def select_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
-    statistic = await get_entities_statistic()
-    await bot.send_message(message.chat.id, f'📊 <b>Статистика упоминаний</b>\n\n{'\n'.join(statistic)}')
-
-
 @router.message(Command(commands=["search"]))
 async def search_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
     tg_user = message.from_user
@@ -59,6 +53,11 @@ async def search_handler(message: Message, dialog_manager: DialogManager, state:
         "️🔍️",
         reply_markup=get_inline_search_markup()
     )
+
+
+@router.message(Command(commands=["statistic"]))
+async def select_handler(message: Message, dialog_manager: DialogManager, state: FSMContext):
+    await dialog_manager.start(MainMenuState.Statistic)
 
 
 @router.message(Command(commands=["playlist"]))

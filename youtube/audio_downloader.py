@@ -72,7 +72,7 @@ def download_audio_section_pytube(youtube_url, section_name):
 
 def _download_audio_section_pytube(youtube_url, start_time, end_time, section_name):
     yt = YouTube(youtube_url)
-    audio = yt.streams.filter(only_audio=True).first()
+    audio = yt.streams.filter(only_audio=True).last()
     temp_file_path = os.path.join(TEMP_FOLDER_STRENGTHS, audio.default_filename)
     audio.download(output_path=TEMP_FOLDER_STRENGTHS)
 
@@ -155,7 +155,12 @@ def _download_audio_section_yt_dlp(youtube_url, start_time, end_time, section_na
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
-        'outtmpl': os.path.join(TEMP_FOLDER_STRENGTHS, '%(id)s.%(ext)s')
+        'outtmpl': os.path.join(TEMP_FOLDER_STRENGTHS, '%(id)s.%(ext)s'),
+        # 'postprocessor_args': {  НЕ РАБОТАЕТ ДЛЯ ПОЛУЧЕНИЯ АУДИО НА РУССКОМ
+        #     'metadata': {
+        #       'language': 'ru'
+        #     }
+        # }
     }
 
     try:

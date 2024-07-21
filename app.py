@@ -44,8 +44,8 @@ if __name__ == '__main__':
 
 # start - 🚀️ поехали
 # select - 👥 выбор персон
-# statistic - 📊 статистика
 # search - 🔍️ поиск
+# statistic - 📊 статистика
 # playlist - 🎧 плейлисты ответов
 # contact - 💬 обратная связь
 # help - ❔ помощь
